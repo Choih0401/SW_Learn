@@ -17,11 +17,11 @@ module.exports = (function() {
             database: process.env.DB_NAME
         },
         dev: { // dev server db info
-            host: 'funnyga.me',
-            port: '14103',
-            user: 'root',
-            password: 'ch04010508',
-            database: 'coc'
+            host: process.env.DEV_DB_HOST,
+            port: process.env.DEV_DB_PORT,
+            user: process.env.DEV_DB_USER,
+            password: process.env.DEV_DB_PASS,
+            database: process.env.DEV_DB_NAME
         }
     }
 })();
