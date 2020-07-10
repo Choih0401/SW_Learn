@@ -6,7 +6,7 @@ var connection = mysql_dbc.init()
 
 require('dotenv').config({silent: true})
 
-export const signUp = function (req, res) {
+export const signUp = ((req, res) => {
     var {
         id,
         name,
@@ -87,9 +87,9 @@ export const signUp = function (req, res) {
                 }
             })
     }
-}
+})
 
-export const signIn = function (req, res) {
+export const signIn = ((req, res) => {
     var {
         id,
         password
@@ -105,7 +105,7 @@ export const signIn = function (req, res) {
         async.waterfall([
                 (callback) => {
                     password = crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('base64')).digest('base64');
-                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? AND password = ? AND is_use = 1'
+                    var sql = 'SELECT count(*) as count FROM user_list WHERE id = ? AND password = ?'
                     connection.query(sql, [id, password], (err, result) => {
                         if (err) {
                             callback({
@@ -134,6 +134,9 @@ export const signIn = function (req, res) {
                         detail: err
                     })
                 } else {
+                    req.session.user = {
+                        id: id
+                    }
                     res.json({
                         code: 200,
                         v: 'v1',
@@ -143,4 +146,4 @@ export const signIn = function (req, res) {
                 }
             })
     }
-}
+})

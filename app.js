@@ -2,6 +2,8 @@ import express from 'express'
 import next from 'next'
 import cors from 'cors'
 import morgan from 'morgan'
+import expressSession from 'express-session'
+//import redisStore from 'connect-redis' Redis session 추후 추가 예정
 
 import v1 from './routes/v1/v1'
 
@@ -20,6 +22,18 @@ app.prepare().then(() => {
     server.use(express.json())
     server.use(express.urlencoded({ extended: true }));
     server.use(cors())
+    server.use(
+        expressSession({
+            resave: false,
+            saveUninitialized: false,
+            secret: process.env.COOKIE_SECRET,
+            cookie: {
+                httpOnly: true,
+                secure: false,
+                maxAge: 1000 * 60 * 10,
+            }
+        })
+    )
 
     server.use('/v1', v1)
 

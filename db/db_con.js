@@ -1,7 +1,7 @@
 var mysql = require('mysql')
 var config = require('./db_config').dev
 
-module.exports = function() {
+module.exports = (() => {
     return {
         init: function() {
             return connection;
@@ -16,7 +16,7 @@ module.exports = function() {
             })
         }
     }
-};
+})
 
 var connection = mysql.createConnection({
     host: config.host,
@@ -25,6 +25,7 @@ var connection = mysql.createConnection({
     password: config.password,
     database: config.database
 });
+
 connection.connect(function(err) {
     if (err) throw err
 });

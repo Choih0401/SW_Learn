@@ -1,13 +1,13 @@
 require('dotenv').config({silent: true})
 
-module.exports = (function() {
+module.exports = (() => {
     return {
         local: { // localhost
-            host: 'localhost',
-            port: '3306',
-            user: 'root',
-            password: '',
-            database: ''
+            host: process.env.LOCAL_DB_HOST,
+            port: process.env.LOCAL_DB_PORT,
+            user: process.env.LOCAL_DB_USER,
+            password: process.env.LOCAL_DB_PASS,
+            database: process.env.LOCAL_DB_NAME
         },
         real: { // real server db info
             host: process.env.DB_HOST,
