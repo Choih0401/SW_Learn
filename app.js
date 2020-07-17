@@ -3,6 +3,8 @@ import next from 'next'
 import cors from 'cors'
 import morgan from 'morgan'
 import expressSession from 'express-session'
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express'
 //import redisStore from 'connect-redis' Redis session 추후 추가 예정
 
 import v1 from './routes/v1/v1'
@@ -12,6 +14,23 @@ const prod = process.env.NODE_ENV === 'production';
 
 const app = next({dev})
 const handle = app.getRequestHandler()
+
+const swaggerDefinition = {
+    info: {
+        title: 'Auth Service',
+        version: '0.1',
+        description: 'Auth API'
+    },
+    host: 'localhost:5000',
+    basePath: '/'
+};
+
+const options = {
+    swaggerDefinition,
+    apis: ['./routes/v1/api.js']
+};
+
+const swaggerSpec = swaggerJSDoc(options);
 
 app.prepare().then(() => {
     const server = express()
@@ -30,12 +49,14 @@ app.prepare().then(() => {
             cookie: {
                 httpOnly: true,
                 secure: false,
-                maxAge: 1000 * 60 * 10,
+                maxAge: 1000 * 60 * 10, // 60000ms
             }
         })
     )
 
     server.use('/v1', v1)
+
+    server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     server.get('*', (req, res) => {
         res.sendStatus(404)

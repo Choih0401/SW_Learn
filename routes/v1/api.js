@@ -6,6 +6,109 @@ var connection = mysql_dbc.init()
 
 require('dotenv').config({silent: true})
 
+/**
+ * @swagger
+ * tags:
+ *   name: SignUp
+ *   description: 회원가입 처리
+ * definitions:
+ *   SignUp_Auth_request:
+ *     type: object
+ *     required:
+ *       - id
+ *       - name
+ *       - password1
+ *       - password2
+ *     properties:
+ *       id:
+ *         type: string
+ *         description: 아이디
+ *       name:
+ *         type: string
+ *         description: 이름
+ *       password1:
+ *         type: string
+ *         description: 비밀번호
+ *       password2:
+ *         type: string
+ *         description: 비밀번호 확인
+ *   SignUp_Auth_response:
+ *     type: object
+ *     required:
+ *       - code
+ *     properties:
+ *       code:
+ *         type: integer
+ *         description: Response Code
+ *       v:
+ *         type: string
+ *         description: api version
+ *       status:
+ *         type: string
+ *         description: 회원가입 성공 여부- SUCCESS, ERR
+ *       detail:
+ *         type: string
+ *         description: api 실행 결과
+ *   SignUp_Response_error:
+ *     type: object
+ *     required:
+ *       - code
+ *     properties:
+ *       code:
+ *         type: integer
+ *         description: Response Code
+ *       v:
+ *         type: string
+ *         description: api version
+ *       status:
+ *         type: string
+ *         description: 회원가입 성공 여부- SUCCESS, ERR
+ *       detail:
+ *         type: object
+ *         properties:
+ *           err: 
+ *             type: string
+ *             description: 오류 요약
+ *           message: 
+ *             type: string
+ *             description: 오류 내용
+ */
+
+ /**
+ * @swagger
+ *  paths:
+ *    /v1/auth/signup:
+ *      post:
+ *        tags:
+ *        - "SignUp"
+ *        summary: "SignUp process"
+ *        description: ""
+ *        consumes:
+ *        - "application/json"
+ *        produces:
+ *        - "application/json"
+ *        parameters:
+ *        - in: "body"
+ *          name: "body"
+ *          description: "회원가입 계정 정보와 서비스 정보를 전달"
+ *          required: true
+ *          schema:
+ *            $ref: "#/definitions/SignUp_Auth_request"
+ *        responses:
+ *          200:
+ *            description: "회원가입 결과"
+ *            schema:
+ *              $ref: "#/definitions/SignUp_Auth_response"
+ *          400:
+ *            description: "잘못된 데이터"
+ *            schema:
+ *              $ref: "#/definitions/SignUp_Response_error"
+ *          500:
+ *            description: "회원가입 오류 & 실패"
+ *            schema:
+ *              $ref: "#/definitions/SignUp_Response_error"
+ */
+
 export const signUp = ((req, res) => {
     var {
         id,
