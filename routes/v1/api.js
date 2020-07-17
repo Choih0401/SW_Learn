@@ -13,12 +13,6 @@ export const signUp = ((req, res) => {
         password1,
         password2
     } = req.body
-    if (id > 50) {
-        id = id.slice(0, 50)
-    }
-    if (name > 50) {
-        name = name.slice(0, 50)
-    }
     if (!id || !name || !password1 || !password2) {
         res.json({
             code: 500,
@@ -27,6 +21,10 @@ export const signUp = ((req, res) => {
             detail: 'INVALID FORMAT'
         })
     } else {
+        if (id > 50)
+            id = id.slice(0, 50)
+        if (name > 50)
+            name = name.slice(0, 50)
         async.waterfall([
                 (callback) => {
                     password1 = crypto.createHash('sha512').update(crypto.createHash('sha512').update(password1).digest('base64')).digest('base64');
@@ -102,6 +100,8 @@ export const signIn = ((req, res) => {
             detail: 'INVALID FORMAT'
         })
     } else {
+        if (id > 50)
+            id = id.slice(0, 50)
         async.waterfall([
                 (callback) => {
                     password = crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('base64')).digest('base64');
